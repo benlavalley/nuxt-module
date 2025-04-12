@@ -1,6 +1,6 @@
 import type { Nuxt } from '@nuxt/schema'
 import defu from 'defu'
-import type { Options } from '@vuetify/loader-shared'
+import type { ObjectImportPluginOptions } from '@vuetify/loader-shared'
 import { isPackageExists } from 'local-pkg'
 import { vuetifyStylesPlugin } from '../vite/vuetify-styles-plugin'
 import { vuetifyConfigurationPlugin } from '../vite/vuetify-configuration-plugin'
@@ -54,29 +54,32 @@ export function configureVite(configKey: string, nuxt: Nuxt, ctx: VuetifyNuxtCon
           viteInlineConfig.css.preprocessorOptions ??= {}
           viteInlineConfig.css.preprocessorOptions.sass ??= {}
           viteInlineConfig.css.preprocessorOptions.sass.api = 'modern-compiler'
+          viteInlineConfig.css.preprocessorOptions.scss ??= {}
+          viteInlineConfig.css.preprocessorOptions.scss.api = 'modern-compiler'
         }
         else {
           viteInlineConfig.css ??= {}
           viteInlineConfig.css.preprocessorOptions ??= {}
           viteInlineConfig.css.preprocessorOptions.sass ??= {}
           viteInlineConfig.css.preprocessorOptions.sass.api = 'modern'
+          viteInlineConfig.css.preprocessorOptions.scss ??= {}
+          viteInlineConfig.css.preprocessorOptions.scss.api = 'modern'
           if (!('preprocessorMaxWorkers' in viteInlineConfig.css))
             viteInlineConfig.css.preprocessorMaxWorkers = true
         }
       }
     }
 
-    // fix #236
-    const vuetifyImportOptions: Options = {}
+    const autoImport: ObjectImportPluginOptions = { labs: true }
     const ignoreDirectives = ctx.moduleOptions.ignoreDirectives
+    // fix #236
     if (ignoreDirectives) {
-      const ignore = Array.isArray(ignoreDirectives)
+      autoImport.ignore = Array.isArray(ignoreDirectives)
         ? ignoreDirectives
         : [ignoreDirectives]
-      vuetifyImportOptions.autoImport = { ignore }
     }
 
-    viteInlineConfig.plugins.push(vuetifyImportPlugin(vuetifyImportOptions))
+    viteInlineConfig.plugins.push(vuetifyImportPlugin({ autoImport }))
     // exclude styles plugin
     if (typeof ctx.moduleOptions.styles !== 'boolean')
       viteInlineConfig.plugins.push(vuetifyStylesPlugin({ styles: ctx.moduleOptions.styles }, ctx.viteVersion, ctx.logger))
