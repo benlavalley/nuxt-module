@@ -1,7 +1,7 @@
 {
   "name": "vuetify-nuxt-module",
   "type": "module",
-  "version": "0.18.7",
+  "version": "0.19.0",
   "packageManager": "pnpm@9.9.0",
   "description": "Zero-Config Nuxt Module for Vuetify",
   "author": "userquin <userquin@gmail.com>",
@@ -75,7 +75,7 @@
     "unconfig": "^0.5.5",
     "upath": "^2.0.1",
     "vite-plugin-vuetify": "^2.1.0",
-    "vuetify": "^3.8.0"
+    "vuetify": "^3.8.3"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^0.43.1",
